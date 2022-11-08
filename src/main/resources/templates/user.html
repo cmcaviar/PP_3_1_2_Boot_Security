@@ -12,15 +12,13 @@
         <th>Username</th>
         <th>Name</th>
         <th>Age</th>
-        <th>Password</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td th:text="${user.username}"></td>
-        <td th:text="${user.name}"></td>
-        <td th:text="${user.age}"></td>
-        <td>*****</td>
+    <tr th:each="user : ${user}">
+        <td th:utext="${user.getUsername()}"></td>
+        <td th:utext="${user.getName()}"></td>
+        <td th:utext="${user.getAge()}"></td>
     </tr>
     </tbody>
 </table>
