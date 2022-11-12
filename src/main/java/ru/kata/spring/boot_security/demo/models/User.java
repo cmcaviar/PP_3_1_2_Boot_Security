@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.models;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -8,9 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
 import java.util.Collection;
-
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -43,25 +41,15 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Set<Role> roles;
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    @Autowired
     public User() {
     }
 
-    public User(int id, String name, int age, String username, String password, Set<Role> roles) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.username = username;
-        this.password = password;
-        this.roles = roles;
-    }
 
     @Override
-    @Autowired
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
