@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
+    @Transactional
     @Override
     public void deleteUserById(int id) {
         userRepository.deleteById(id);
