@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.models;
 
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,7 @@ public class User implements UserDetails {
     @Min(value = 0, message = "Invalid age")
     private int age;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     @NotEmpty(message = "Required field")
     @Size(min = 2, max = 25, message = "Invalid login")
     private String username;
@@ -139,6 +140,6 @@ public class User implements UserDetails {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age, username, password, roles);
+        return getClass().hashCode();
     }
 }

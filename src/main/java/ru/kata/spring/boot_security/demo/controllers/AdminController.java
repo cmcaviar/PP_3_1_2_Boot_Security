@@ -5,9 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import javax.validation.Valid;
+import java.util.Set;
 
 
 @Controller
@@ -34,11 +36,11 @@ public class AdminController {
     }
     @PostMapping
     public String create(@ModelAttribute("user") @Valid User user,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult, @RequestParam("roles") Set<Role> roles) {
         if (bindingResult.hasErrors()) {
             return "new";
         }
-        userService.saveUser(user);
+        userService.saveUser(user, roles);
         return "redirect:/admin";
     }
 
@@ -56,11 +58,11 @@ public class AdminController {
     }
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") @Valid User user,
-                         BindingResult bindingResult, @PathVariable("id") int id) {
+                         BindingResult bindingResult, @PathVariable("id") int id, @RequestParam("roles") Set<Role> roles) {
         if (bindingResult.hasErrors()) {
             return "edit";
         }
-        userService.updateUser(userService.getUserById(id));
+        userService.updateUser(userService.getUserById(id), roles, id);
         return "redirect:/admin";
     }
     @DeleteMapping("/{id}")
